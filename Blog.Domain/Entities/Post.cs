@@ -11,9 +11,9 @@ public class Post
 {
     private int maxContentLength = 1000;
 
-    public int Id;
+    public Guid Id { get; set; }
     public string Title { get; set; }
-    public string Content { get; set; }
+    public string Content { get; set; } = null!;
     public User Author { get; set; } 
 
     public DateTime CreatedAt { get; set; }
@@ -28,10 +28,10 @@ public class Post
         if (_author == null)
             throw new ValueCannotBeEmptyException("Author");
 
-        Title = _title;
-        Content = _content;
+        this.Title = _title;
+        this.Author = _author;
 
-        Author = _author;
+        UpdateContent(_content);
     }
 
     public void UpdateContent(string newContent)
@@ -39,7 +39,7 @@ public class Post
         if (newContent.Length > maxContentLength)
             throw new ExceedCaractersNumberException("Content");
 
-        Content = newContent ?? "";
+        this.Content = newContent ?? "";
     }
 
 }

@@ -28,9 +28,9 @@ public class Comment
         if (post == null)
             throw new ValueCannotBeEmptyException("Post");
 
-        Post = post;
-        Author = author;        
-        Content = content;
+        this.Post = post;
+        this.Author = author;
+        this.Content = content;
     }
 
     public void UpdateComment(string newContent)
