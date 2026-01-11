@@ -56,7 +56,7 @@ public class PostLikeTest
         string bio = "Bio Test";
         User user = new User(userName, emailCreated, bio);
 
-        Post post = null;
+        Post post = null!;
 
         //Act
         Action act = () => new PostLike(user, post);
@@ -79,7 +79,7 @@ public class PostLikeTest
         string bio = "Bio Test";
         User user = new User(userName, emailCreated, bio);
 
-        User notExistingUser = null;
+        User notExistingUser = null!;
 
         string title = "Post Title";
         string content = "Post Content";

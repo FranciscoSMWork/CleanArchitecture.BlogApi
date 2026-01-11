@@ -72,7 +72,7 @@ public class CommentTests
         string bio = "Bio Test";
         User authorPost = new User(name, emailCreated, bio);
 
-        User authorComment = null;
+        User authorComment = null!;
 
         string title = "Title Test";
         string content = "Content test";
@@ -100,7 +100,7 @@ public class CommentTests
 
         string content = "Content test";
 
-        Post post = null;
+        Post post = null!;
 
         //Act
         Action act = () => new Comment(post, author, content);

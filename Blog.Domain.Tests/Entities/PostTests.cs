@@ -44,7 +44,7 @@ public class PostTests
         string email = "test@test.com";
         Email emailCreated = new Email(email);
 
-        User user = null;
+        User user = null!;
 
         //Act
         Action act = () => new Post(title, content, user);
