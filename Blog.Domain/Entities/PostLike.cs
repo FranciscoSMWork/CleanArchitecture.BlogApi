@@ -6,8 +6,11 @@ public class PostLike
 {
     public int Id { get; set; }
     public User User { get; set; }
+    public Guid UserId;
     public Post Post { get; set; }
+    public Guid PostId;
 
+    protected PostLike() { }
     public PostLike(User _user, Post _post)
     {
         if (_user == null)

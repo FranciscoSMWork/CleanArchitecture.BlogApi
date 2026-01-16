@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Application.Interfaces;
-
-public interface IUnitOfWork
+namespace Blog.API.Tests.Controllers
 {
-    Task CommitAsync();
+    internal class PostControllerTests
+    {
+    }
 }

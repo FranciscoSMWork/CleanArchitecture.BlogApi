@@ -9,7 +9,7 @@ namespace Blog.Domain.ValueObjects;
 public class Email
 {
     public string Address { get; private set; }
-
+    protected Email() { }
     public Email(string address)
     {
         if (string.IsNullOrWhiteSpace(address))

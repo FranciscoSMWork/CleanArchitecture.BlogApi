@@ -4,13 +4,14 @@ namespace Blog.Domain.Entities;
 
 public class Tag
 {
+    public int Id { get; set; }
     public string Name { get; set; } = "";
     public string Slug { get; set; } = "";
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
 
-
+    protected Tag() { }
     public Tag(string _name, string _slug)
     {
         if (string.IsNullOrEmpty(_name))

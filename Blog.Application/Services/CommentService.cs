@@ -13,7 +13,7 @@ public class CommentService
         this._unitOfWork = unitOfWork;
     }
 
-    public async Task<Comment> FindCommentById(int Id)
+    public async Task<Comment> FindCommentById(Guid Id)
     {
        return await _commentRepository.GetByIdAsync(Id);
     }

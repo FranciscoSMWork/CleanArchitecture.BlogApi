@@ -3,11 +3,6 @@ using Blog.Application.Services;
 using Blog.Domain.Entities;
 using Blog.Domain.ValueObjects;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Application.Tests.Services;
 

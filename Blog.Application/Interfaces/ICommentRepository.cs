@@ -3,6 +3,6 @@
 namespace Blog.Application.Interfaces;
 public interface ICommentRepository
 {
-    Task<Comment> GetByIdAsync(int Id);
+    Task<Comment> GetByIdAsync(Guid Id);
     Task<bool> AddAsync(Comment comment);
 }
