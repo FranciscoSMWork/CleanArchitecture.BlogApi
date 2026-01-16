@@ -6,6 +6,7 @@ using Blog.Infrastructure.Tests.Fixtures;
 using Blog.Infrastructure.Repositories.Implementations;
 using FluentAssertions;
 using Blog.Application.Interfaces;
+using Blog.Domain.Interfaces.Repositories;
 
 namespace Blog.Infrastructure.Tests.Repositories;
 public class PostRepositoryTests

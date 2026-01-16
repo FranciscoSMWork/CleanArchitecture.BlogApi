@@ -1,5 +1,4 @@
 ﻿namespace Blog.Application.Commands.Users;
-
 public class CreateUserCommand
 {
     public string Name { get; set; }

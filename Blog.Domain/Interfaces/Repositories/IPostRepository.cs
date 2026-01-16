@@ -1,6 +1,6 @@
 ﻿using Blog.Domain.Entities;
 
-namespace Blog.Application.Interfaces;
+namespace Blog.Domain.Interfaces.Repositories;
 public interface IPostRepository
 {
     Task<Post?> GetByIdAsync(Guid Id);

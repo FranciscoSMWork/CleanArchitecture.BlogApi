@@ -16,20 +16,6 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
-    {
-
-        var command = new CreateUserCommand
-        {
-            Name = request.Name,
-            Email = request.Email,
-            Bio = request.Bio
-        };
-
-        var user = await _userService.CreateUser(command);
-        return CreatedAtAction("GetById", new { id = user.Id }, user);
-    }
 
 /*    [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetById(Guid id)

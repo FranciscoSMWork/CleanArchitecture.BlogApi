@@ -1,10 +1,5 @@
-﻿using Blog.Application.Interfaces;
-using Blog.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Blog.Domain.Entities;
+using Blog.Domain.Interfaces.Repositories;
 
 namespace Blog.Application.Services;
 public class PostService

@@ -1,5 +1,5 @@
-﻿using Blog.Application.Interfaces;
-using Blog.Domain.Entities;
+﻿using Blog.Domain.Entities;
+using Blog.Domain.Interfaces.Repositories;
 
 namespace Blog.Application.Services;
 public class CommentService

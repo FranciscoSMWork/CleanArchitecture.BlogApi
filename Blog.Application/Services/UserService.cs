@@ -1,12 +1,8 @@
 ﻿using Blog.Application.Commands.Users;
 using Blog.Application.Interfaces;
 using Blog.Domain.Entities;
+using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Application.Services;
 
@@ -46,22 +42,8 @@ public class UserService : IUserService
         return await _userRepository.DeleteAsync(id);
     }
 
-    public async Task<User> CreateUser(CreateUserCommand command)
+    Task<User> IUserService.AddUser(User user)
     {
-        var email = new Email(command.Email);
-
-        if (await _userRepository.EmailExists(email))
-            throw new InvalidOperationException("Email already exists");
-
-        var user = new User(
-            command.Name,
-            email,
-            command.Bio
-        );
-
-        await _userRepository.AddAsync(user);
-        await _unitOfWork.CommitAsync();
-
-        return user;
+        throw new NotImplementedException();
     }
 }

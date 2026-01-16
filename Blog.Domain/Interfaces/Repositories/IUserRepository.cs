@@ -1,12 +1,11 @@
 ﻿using Blog.Domain.Entities;
 using Blog.Domain.ValueObjects;
 
-namespace Blog.Application.Interfaces;
-
+namespace Blog.Domain.Interfaces.Repositories;
 public interface IUserRepository
 {
     Task<User> GetByIdAsync(Guid id);
-    Task<Boolean> AddAsync(User user);
+    Task<bool> AddAsync(User user);
     Task<List<User>> ListAllAsync();
     Task<bool> UpdateAsync(User user);
     Task<bool> DeleteAsync(Guid id);
