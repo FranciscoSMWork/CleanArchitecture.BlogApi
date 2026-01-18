@@ -1,5 +1,6 @@
-﻿using Blog.Application.Commands.Users;
-using Blog.Application.Interfaces;
+﻿using Blog.Application.Abstractions.Services;
+using Blog.Application.Commands.Users;
+using Blog.Application.DTOs.Users;
 using Blog.Domain.Entities;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
@@ -22,8 +23,10 @@ public class UserService : IUserService
         return await _userRepository.GetByIdAsync(Id);
     }
 
-    public async Task<bool> AddUser(User user)
+    public async Task<bool> AddUser(CreateUserDto dto)
     {
+        Email email = new Email(dto.Email);
+        User user = new User(dto.Name, email, dto.Bio);
         return await _userRepository.AddAsync(user);
     }
 
@@ -42,8 +45,4 @@ public class UserService : IUserService
         return await _userRepository.DeleteAsync(id);
     }
 
-    Task<User> IUserService.AddUser(User user)
-    {
-        throw new NotImplementedException();
-    }
 }

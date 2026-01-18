@@ -1,12 +1,11 @@
 ﻿using Blog.API.Dtos.Users;
-using Blog.Application.Commands.Users;
-using Blog.Application.Interfaces;
+using Blog.Application.Abstractions.Services;
+using Blog.Application.DTOs.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers;
 
 [ApiController]
-[Route("api/users")]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -16,23 +15,19 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 
-
-/*    [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id)
+    [HttpPost]
+    [Route("api/users")]
+    public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
-        var user = await _userService.FindUserById(id);
-
-        if (user is null)
-            return NotFound();
-
-        var response = new UserResponse
+        var user = new CreateUserDto
         {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user.Email.ToString(),
-            Bio = user.Bio
+            Name = request.Name,
+            Email = request.Email,
+            Bio = request.Bio
         };
 
-        return Ok(response);
-    }*/
+        await _userService.AddUser(user);
+
+        return Created($"/users/{user.Name}", user);
+    }
 }

@@ -1,10 +1,11 @@
-﻿using Blog.Domain.Entities;
+﻿using Blog.Application.DTOs.Users;
+using Blog.Domain.Entities;
 
-namespace Blog.Application.Interfaces;
+namespace Blog.Application.Abstractions.Services;
 
 public interface IUserService
 {
-    Task<User> AddUser(User user);
+    Task<bool> AddUser(CreateUserDto dto);
     Task<User?> FindUserById(Guid id);
     Task<List<User>> ListAllUsers();
     Task<bool> Update(User user);

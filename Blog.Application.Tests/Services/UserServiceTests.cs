@@ -1,4 +1,5 @@
-﻿using Blog.Application.Services;
+﻿using Blog.Application.DTOs.Users;
+using Blog.Application.Services;
 using Blog.Domain.Entities;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
@@ -66,7 +67,14 @@ public class UserServiceTests
             .ReturnsAsync(true);
 
         //Act
-        var userAddedCorrectly = await _userService.AddUser(user);
+        CreateUserDto createUserDto = new CreateUserDto
+        {
+            Name = userName,
+            Email = email,
+            Bio = bio
+        };
+
+        var userAddedCorrectly = await _userService.AddUser(createUserDto);
 
         //Assert
         _userRepositoryMock.Verify(_userRespositoryMock => _userRespositoryMock.AddAsync(user), Times.Once);
