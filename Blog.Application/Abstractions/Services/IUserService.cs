@@ -1,5 +1,6 @@
 ﻿using Blog.Application.DTOs.Users;
 using Blog.Domain.Entities;
+using Blog.Domain.ValueObjects;
 
 namespace Blog.Application.Abstractions.Services;
 
@@ -10,4 +11,5 @@ public interface IUserService
     Task<List<User>> ListAllUsers();
     Task<bool> Update(User user);
     Task<bool> Delete(Guid id);
+    Task<bool> EmailExistsAsync(Email email);
 }

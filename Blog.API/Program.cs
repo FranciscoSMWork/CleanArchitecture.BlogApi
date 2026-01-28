@@ -1,3 +1,4 @@
+using Blog.API.Middlewares;
 using Blog.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -32,6 +35,8 @@ app.UseAuthorization();
 app.MapRazorPages();
 
 app.MapControllers();
+
+app.UseDeveloperExceptionPage();
 
 app.Run();
 

@@ -1,4 +1,4 @@
-﻿using Blog.API.Tests.Controllers.Models;
+﻿using Blog.API.Dtos.Users;
 using Blog.API.Tests.Fixtures;
 using FluentAssertions;
 using System.Net;
@@ -29,7 +29,7 @@ public class UserControllerTests : IClassFixture<ApiTestFactory>
 
         //Act
         var response = await _client.PostAsJsonAsync("/api/users", request);
-
+        Console.WriteLine(response);
         //Assert
         var content = await response.Content.ReadAsStringAsync();
         Console.WriteLine(content);

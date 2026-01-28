@@ -30,4 +30,41 @@ public class UsersController : ControllerBase
 
         return Created($"/users/{user.Name}", user);
     }
+
+    //GET /posts retorna lista
+    [HttpGet]
+    [Route("api/users")]
+    public async Task<IActionResult> List()
+    {
+        var users = await _userService.ListAllUsers();
+
+        var response = users.Select(user => new UserResponse
+        {
+            Name = user.Name,
+            Email = user.Email.Address,
+            Bio = user.Bio
+        });
+
+        return Ok(response);
+    }
+
+    //GET /users/{id} retorna usuário existente
+    [HttpGet]
+    [Route("api/users/{id}")]
+    public async Task<IActionResult> Get(Guid Id)
+    {
+        var user = await _userService.FindUserById(Id);
+        if (user == null)
+                return NotFound();
+
+        var response = new GetUserResponse
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email.Address,
+            Bio = user.Bio
+        };
+
+        return Ok(response);
+    }
 }

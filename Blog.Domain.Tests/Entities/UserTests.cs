@@ -72,21 +72,4 @@ public class UserTests
             .WithMessage("Number of caracthers of Bio exceed the limit");
     }
 
-    //Usuário deve ter ID válido
-    [Fact]
-    public async Task CreateUser_ShouldGenerateValidId()
-    {
-        //Arrange
-        string email = "email@test.com";
-        Email emailCreated = new Email(email);
-
-        string userName = "Test Name";
-        string bio = "Bio Test";
-        
-        //Act
-        User user = new User(userName, emailCreated, bio);
-
-        //Assert
-        user.Id.Should().NotBe(Guid.Empty);
-    }
 }

@@ -52,6 +52,7 @@ public class PostRepository : IPostRepository
     public async Task<List<Post>> ListAllAsync()
     {
         return await _context.Posts
+            .Include(p => p.Author)
             .AsNoTracking()
             .ToListAsync();
     }

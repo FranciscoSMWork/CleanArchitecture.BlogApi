@@ -2,6 +2,7 @@
 using Blog.Application.Commands.Users;
 using Blog.Application.DTOs.Users;
 using Blog.Domain.Entities;
+using Blog.Domain.Exceptions;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
 
@@ -26,6 +27,10 @@ public class UserService : IUserService
     public async Task<bool> AddUser(CreateUserDto dto)
     {
         Email email = new Email(dto.Email);
+        if (await _userRepository.EmailExists(email))
+        {
+            throw new AlreadyExistsException("Email");
+        }
         User user = new User(dto.Name, email, dto.Bio);
         return await _userRepository.AddAsync(user);
     }
@@ -45,4 +50,8 @@ public class UserService : IUserService
         return await _userRepository.DeleteAsync(id);
     }
 
+    public async Task<bool> EmailExistsAsync(Email email)
+    {
+       return await _userRepository.EmailExists(email);
+    }
 }

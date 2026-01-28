@@ -17,15 +17,16 @@ namespace Blog.API.Tests.Fixtures;
 
 public class ApiTestFactory : WebApplicationFactory<Program>
 {
+    private readonly string _databaseName = $"BlogDb_Test_{Guid.NewGuid()}";
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.ConfigureServices(services =>
         {
             var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<BlogDbContext>)    
+                d => d.ServiceType == typeof(DbContextOptions<BlogDbContext>)
             );
 
-            if(descriptor != null)
+            if (descriptor != null)
             {
                 services.Remove(descriptor);
             }
@@ -33,7 +34,10 @@ public class ApiTestFactory : WebApplicationFactory<Program>
             services.AddDbContext<BlogDbContext>(options =>
             {
                 options.UseSqlServer(
-                    "Server=(localdb)\\MSSQLLocalDB;Database=BlogV2;Trusted_Connection=True;"
+                    $"Data Source=(localdb)\\MSSQLLocalDB;" +
+                    $"Initial Catalog={_databaseName};" +
+                    $"Integrated Security=True;" +
+                    $"Encrypt=False;"
                 );
             });
 
@@ -41,14 +45,22 @@ public class ApiTestFactory : WebApplicationFactory<Program>
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            using var scope = serviceProvider.CreateScope();
+            var sp = services.BuildServiceProvider();
+            using var scope = sp.CreateScope();
             var db = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
 
-            db.Database.OpenConnection();
-            db.Database.EnsureCreated();
+            db.Database.Migrate();
 
-        });
+        });   
+
+        builder.UseEnvironment("Development");
     }
+    public override async ValueTask DisposeAsync()
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+        await db.Database.EnsureDeletedAsync();
+        await base.DisposeAsync();
+    }
+
 }

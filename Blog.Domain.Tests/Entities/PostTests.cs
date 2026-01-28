@@ -85,7 +85,7 @@ public class PostTests
     public async Task UpdatePost_WhenContentIsCorrect_ShouldUpdate()
     {
         //Arrange
-        string title = "";
+        string title = "Title";
         string content = "Post Content Test";
 
         string email = "test@test.com";
