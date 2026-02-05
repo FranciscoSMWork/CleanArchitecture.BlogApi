@@ -1,7 +1,9 @@
-﻿using Blog.Application.Services;
+﻿using Blog.Application.DTOs.Posts;
+using Blog.Application.Services;
 using Blog.Domain.Entities;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
+using FluentAssertions;
 using Moq;
 
 namespace Blog.Application.Tests.Services;
@@ -9,14 +11,16 @@ public class PostServiceTests
 {
 
     private Mock<IPostRepository> _postRepositoryMock;
+    private Mock<IUserRepository> _userRepositoryMock;
     private Mock<IUnitOfWork> _unitOfWorkMock;
     private PostService _postService;
 
     public PostServiceTests()
     {
         _postRepositoryMock = new Mock<IPostRepository>();
+        _userRepositoryMock = new Mock<IUserRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _postService = new PostService(_postRepositoryMock.Object, _unitOfWorkMock.Object);
+        _postService = new PostService(_postRepositoryMock.Object, _userRepositoryMock.Object , _unitOfWorkMock.Object);
     }
 
     [Fact]
@@ -50,7 +54,7 @@ public class PostServiceTests
     }
 
     [Fact]
-    public async Task CreatePost_WhenDatasAreCorrect_ShouldReturnTrue()
+    public async Task CreatePost_WhenDatasAreCorrect_ShouldReturnNewPost()
     {
         // Arrange
         string email = "email@test.com";
@@ -68,13 +72,23 @@ public class PostServiceTests
 
         _postRepositoryMock
             .Setup(_postRepositoryMock => _postRepositoryMock.AddAsync(post))
-            .ReturnsAsync(true);
+            .ReturnsAsync(post);
+
+        CreatePostDto createPostDto = new CreatePostDto
+        {
+            Title = title,
+            Content = content,
+            AuthorId = user.Id
+        };
 
         // Act
-        bool postReturned = await _postService.AddAsync(post);
+        PostResultDto postReturned = await _postService.AddAsync(createPostDto);
 
         // Assert
-        Assert.True(postReturned);
+        postReturned.Title.Should().Be(title);
+        postReturned.Content.Should().Be(content);
+        postReturned.Author.Name.Should().Be(nameUser);
+        postReturned.Author.Bio.Should().Be(bio);
         _postRepositoryMock
             .Verify(_postRepositoryMock => _postRepositoryMock.AddAsync(post), Times.Once);
     }

@@ -14,10 +14,11 @@ public class PostRepository : IPostRepository
         _context = context;
     }
 
-    public async Task<bool> AddAsync(Post post)
+    public async Task<Post> AddAsync(Post post)
     {
-        await _context.Posts.AddAsync(post);
-        return await _context.SaveChangesAsync() > 0;
+        await _context.Posts.AddAsync(post); 
+        await _context.SaveChangesAsync();
+        return post;
     }
 
     public async Task<bool> DeleteAsync(Guid PostId)

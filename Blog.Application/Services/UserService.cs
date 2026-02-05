@@ -24,7 +24,7 @@ public class UserService : IUserService
         return await _userRepository.GetByIdAsync(Id);
     }
 
-    public async Task<bool> AddUser(CreateUserDto dto)
+    public async Task<UserResultDto> AddUser(CreateUserDto dto)
     {
         Email email = new Email(dto.Email);
         if (await _userRepository.EmailExists(email))
@@ -32,7 +32,16 @@ public class UserService : IUserService
             throw new AlreadyExistsException("Email");
         }
         User user = new User(dto.Name, email, dto.Bio);
-        return await _userRepository.AddAsync(user);
+        User createdUser = await _userRepository.AddAsync(user);
+
+        UserResultDto userResultDto = new UserResultDto
+        {
+            Id = createdUser.Id,
+            Name = createdUser.Name,
+            Email = createdUser.Email.Address,
+            Bio = createdUser.Bio
+        };
+        return userResultDto;
     }
 
     public async Task<List<User>> ListAllUsers()
@@ -40,9 +49,12 @@ public class UserService : IUserService
         return await _userRepository.ListAllAsync();
     }
 
-    public async Task<bool> Update(User user)
+    public async Task<bool> Update(UpdateUserDto updateUserDto)
     {
-        return await _userRepository.UpdateAsync(user);
+        Email email = new Email(updateUserDto.Email);
+        User user = new User(updateUserDto.Name, email, updateUserDto.Bio);
+
+        return await _userRepository.UpdateAsync(updateUserDto.Id, user);
     }
 
     public async Task<bool> Delete(Guid id)

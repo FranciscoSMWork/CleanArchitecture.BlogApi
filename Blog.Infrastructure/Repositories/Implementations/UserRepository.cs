@@ -15,10 +15,11 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<bool> AddAsync(User user)
+    public async Task<User> AddAsync(User user)
     {
         await _context.Users.AddAsync(user);
-        return await _context.SaveChangesAsync() > 0;
+        await _context.SaveChangesAsync();
+        return user;
     }
 
     public async Task<bool> DeleteAsync(Guid UserId)
@@ -50,10 +51,10 @@ public class UserRepository : IUserRepository
             .ToListAsync();
     }
 
-    public async Task<bool> UpdateAsync(User user)
+    public async Task<bool> UpdateAsync(Guid Id, User user)
     {
         var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == user.Id && u.DeletedAt == null);
+            .FirstOrDefaultAsync(u => u.Id == Id && u.DeletedAt == null);
 
         if (existingUser == null)
             return false;

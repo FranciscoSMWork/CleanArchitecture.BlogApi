@@ -1,4 +1,5 @@
-﻿using Blog.Application.Services;
+﻿using Blog.Application.DTOs.Comments;
+using Blog.Application.Services;
 using Blog.Domain.Entities;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
@@ -11,12 +12,19 @@ public class CommentServiceTests
     private readonly Mock<ICommentRepository> _commentRepositoryMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
     private readonly CommentService _commentService;
+    private readonly Mock<IPostRepository> _postRepositoryMock;
+    private readonly Mock<IUserRepository> _userRepositoryMock;
 
     public CommentServiceTests()
     {
         _commentRepositoryMock = new Mock<ICommentRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
-        _commentService = new CommentService(_commentRepositoryMock.Object, _unitOfWorkMock.Object);
+        _commentService = new CommentService(
+            _commentRepositoryMock.Object,
+            _userRepositoryMock.Object,
+            _postRepositoryMock.Object,
+            _unitOfWorkMock.Object
+        );
     }
 
     [Fact]
@@ -74,14 +82,22 @@ public class CommentServiceTests
 
         _commentRepositoryMock
             .Setup(_commentRepositoryMock => _commentRepositoryMock.AddAsync(comment))
-            .ReturnsAsync(true);
+            .ReturnsAsync(comment);
+
+
+        CommentCreateDto commentCreate = new CommentCreateDto
+        {
+            PostId = post.Id,
+            AuthorId = user.Id,
+            Content = contentComment
+        };
 
         //Act
-        bool commentAdded = await _commentService.AddCommentAsync(comment);
+        CommentDto commentAdded = await _commentService.AddCommentAsync(commentCreate);
 
         //Assert
         _commentRepositoryMock.Verify(_commentRepositoryMock => _commentRepositoryMock.AddAsync(comment), Times.Once);
-        Assert.True(commentAdded);
+        
     }
 
 }

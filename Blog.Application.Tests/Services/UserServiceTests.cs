@@ -3,6 +3,7 @@ using Blog.Application.Services;
 using Blog.Domain.Entities;
 using Blog.Domain.Interfaces.Repositories;
 using Blog.Domain.ValueObjects;
+using FluentAssertions;
 using Moq;
 
 namespace Blog.Application.Tests.Services;
@@ -64,7 +65,7 @@ public class UserServiceTests
 
         _userRepositoryMock
             .Setup(_userRespositoryMock => _userRespositoryMock.AddAsync(user))
-            .ReturnsAsync(true);
+            .ReturnsAsync(user);
 
         //Act
         CreateUserDto createUserDto = new CreateUserDto
@@ -74,11 +75,13 @@ public class UserServiceTests
             Bio = bio
         };
 
-        var userAddedCorrectly = await _userService.AddUser(createUserDto);
+        UserResultDto userResultDto = await _userService.AddUser(createUserDto);
 
         //Assert
         _userRepositoryMock.Verify(_userRespositoryMock => _userRespositoryMock.AddAsync(user), Times.Once);
-        Assert.True(userAddedCorrectly);
+        userResultDto.Name.Should().Be(userName);
+        userResultDto.Bio.Should().Be(bio);
+        userResultDto.Email.Should().Be(email);
     }
 
     // Deve permitir listar todos os funcionários
@@ -126,14 +129,22 @@ public class UserServiceTests
         user.Bio = newBio;
 
         _userRepositoryMock
-            .Setup(_userRespositoryMock => _userRespositoryMock.UpdateAsync(user))
+            .Setup(_userRespositoryMock => _userRespositoryMock.UpdateAsync(user.Id, user))
             .ReturnsAsync(true);
 
+        UpdateUserDto updateUserDto = new UpdateUserDto
+        {
+            Id = user.Id,
+            Name = newUserName,
+            Email = email,
+            Bio = newBio
+        };
+
         //Act
-        bool userEffectiveUpdated = await _userService.Update(user);
+        bool userEffectiveUpdated = await _userService.Update(updateUserDto);
 
         //Assert
-        _userRepositoryMock.Verify(userRepository => userRepository.UpdateAsync(user), Times.Once());
+        _userRepositoryMock.Verify(userRepository => userRepository.UpdateAsync(user.Id, user), Times.Once());
     }
 
     // Deve permitir excluir um funcionário existente

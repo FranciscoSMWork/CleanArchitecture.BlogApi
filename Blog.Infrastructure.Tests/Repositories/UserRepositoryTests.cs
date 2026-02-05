@@ -217,7 +217,7 @@ public class UserRepositoryTests
         user.Email = newCreatedEmail;
 
         //Act
-        bool userUpdated = await _repository.UpdateAsync(user);
+        bool userUpdated = await _repository.UpdateAsync(user.Id, user);
 
         //Assert
         userUpdated.Should().BeTrue();

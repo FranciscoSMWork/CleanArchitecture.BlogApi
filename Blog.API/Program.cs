@@ -36,8 +36,6 @@ app.MapRazorPages();
 
 app.MapControllers();
 
-app.UseDeveloperExceptionPage();
-
 app.Run();
 
 public partial class Program { }

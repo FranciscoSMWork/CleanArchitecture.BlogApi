@@ -4,7 +4,7 @@ namespace Blog.Domain.Interfaces.Repositories;
 public interface IPostRepository
 {
     Task<Post?> GetByIdAsync(Guid Id);
-    Task<bool> AddAsync(Post post);
+    Task<Post> AddAsync(Post post);
     Task<List<Post>> ListAllAsync();
     Task<bool> UpdatePost(Post post);
     Task<bool> DeleteAsync(Guid Id);

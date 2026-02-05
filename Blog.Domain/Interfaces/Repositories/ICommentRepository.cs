@@ -4,5 +4,7 @@ namespace Blog.Domain.Interfaces.Repositories;
 public interface ICommentRepository
 {
     Task<Comment> GetByIdAsync(Guid Id);
-    Task<bool> AddAsync(Comment comment);
+    Task<Comment> AddAsync(Comment comment);
+    Task<List<Comment>> GetAllAsync();
+    Task<bool> DeleteAsync(Guid Id);
 }

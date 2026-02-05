@@ -43,6 +43,10 @@ public class ApiTestFactory : WebApplicationFactory<Program>
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var sp = services.BuildServiceProvider();

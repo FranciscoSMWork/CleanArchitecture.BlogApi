@@ -26,9 +26,9 @@ public class UsersController : ControllerBase
             Bio = request.Bio
         };
 
-        await _userService.AddUser(user);
-
-        return Created($"/users/{user.Name}", user);
+        UserResultDto userResultDto = await _userService.AddUser(user);
+        
+        return Created($"/users/{userResultDto.Name}", userResultDto);
     }
 
     //GET /posts retorna lista
@@ -43,7 +43,7 @@ public class UsersController : ControllerBase
             Name = user.Name,
             Email = user.Email.Address,
             Bio = user.Bio
-        });
+        }).ToList();
 
         return Ok(response);
     }
@@ -66,5 +66,24 @@ public class UsersController : ControllerBase
         };
 
         return Ok(response);
+    }
+
+    [HttpPut]
+    [Route("api/users/{id}")]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserRequest request)
+    {
+        UpdateUserDto updateUserDto = new UpdateUserDto
+        {
+            Id = id,
+            Name = request.Name,
+            Email = request.Email,
+            Bio = request.Bio
+        };
+
+        var updated = await _userService.Update(updateUserDto);
+        if (!updated)
+            return NotFound();
+
+        return Ok(updated);
     }
 }
