@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.API.Controllers;
 
 [ApiController]
+[Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -16,7 +17,6 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Route("api/users")]
     public async Task<IActionResult> Create([FromBody] CreateUserRequest request)
     {
         var user = new CreateUserDto
@@ -28,18 +28,18 @@ public class UsersController : ControllerBase
 
         UserResultDto userResultDto = await _userService.AddUser(user);
         
-        return Created($"/users/{userResultDto.Name}", userResultDto);
+        return Created($"/api/users/{userResultDto.Id}", userResultDto);
     }
 
     //GET /posts retorna lista
     [HttpGet]
-    [Route("api/users")]
     public async Task<IActionResult> List()
     {
         var users = await _userService.ListAllUsers();
 
         var response = users.Select(user => new UserResponse
         {
+            Id = user.Id,
             Name = user.Name,
             Email = user.Email.Address,
             Bio = user.Bio
@@ -49,8 +49,7 @@ public class UsersController : ControllerBase
     }
 
     //GET /users/{id} retorna usuário existente
-    [HttpGet]
-    [Route("api/users/{id}")]
+    [HttpGet("{Id}")]
     public async Task<IActionResult> Get(Guid Id)
     {
         var user = await _userService.FindUserById(Id);
@@ -68,13 +67,12 @@ public class UsersController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPut]
-    [Route("api/users/{id}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateUserRequest request)
+    [HttpPut("{Id}")]
+    public async Task<IActionResult> Update(Guid Id, [FromBody] UpdateUserRequest request)
     {
         UpdateUserDto updateUserDto = new UpdateUserDto
         {
-            Id = id,
+            Id = Id,
             Name = request.Name,
             Email = request.Email,
             Bio = request.Bio

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.API.Controllers;
 
 [ApiController]
+[Route("api/[controller]")]
 public class PostsController : ControllerBase
 {
     private readonly IPostService _postService;
@@ -18,7 +19,6 @@ public class PostsController : ControllerBase
     }
 
     [HttpPost]
-    [Route("api/posts")]
     public async Task<IActionResult> Create([FromBody] CreatePostRequest request)
     {
         var postDto = new CreatePostDto
@@ -49,7 +49,6 @@ public class PostsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/api/posts")]
     public async Task<IActionResult> List()
     {
         var posts = await _postService.ListAllPostAsync();
@@ -64,8 +63,7 @@ public class PostsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet]
-    [Route("/api/posts/{id}")]
+    [HttpGet("{Id}")]
     public async Task<IActionResult> Get(Guid Id)
     {
         var post = await _postService.FindPostById(Id);
@@ -89,8 +87,7 @@ public class PostsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpPut]
-    [Route("/api/posts/{id}")]
+    [HttpPut("{Id}")]
     public async Task<IActionResult> Update(Guid Id, [FromBody] UpdatePostRequest updatePostRequest)
     {
         var post = await _postService.FindPostById(Id);
@@ -114,8 +111,7 @@ public class PostsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete]
-    [Route("/api/posts/{id}")]
+    [HttpDelete("{Id}")]
     public async Task<IActionResult> Delete(Guid Id)
     {
         var post = await _postService.FindPostById(Id);

@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.API.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class CommentController : ControllerBase
 {
     private readonly ICommentService _commentService;
@@ -20,7 +22,6 @@ public class CommentController : ControllerBase
     }
 
     [HttpPost]
-    [Route("api/comments")]
     public async Task<IActionResult> Create([FromBody] CreateCommentRequest request)
     {
         var commentCreateDto = new CommentCreateDto
@@ -66,7 +67,6 @@ public class CommentController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/api/comments")]
     public async Task<IActionResult> List()
     {
         var comments = await _commentService.ListCommentAsync();
@@ -103,8 +103,7 @@ public class CommentController : ControllerBase
         return Ok(response);
     }
 
-    [HttpDelete]
-    [Route("/api/comments/{id}")]
+    [HttpDelete("{Id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         var comment = await _commentService.FindCommentById(id);
