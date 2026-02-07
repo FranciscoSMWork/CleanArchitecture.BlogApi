@@ -65,6 +65,10 @@ public class PostServiceTests
 
         User user = new User(nameUser, emailCreated, bio);
 
+        _userRepositoryMock
+            .Setup(_userRepositoryMock => _userRepositoryMock.GetByIdAsync(user.Id))
+            .ReturnsAsync(user);
+
         string title = "Title Test";
         string content = "Content Test";
 

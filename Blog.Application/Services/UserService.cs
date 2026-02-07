@@ -46,7 +46,7 @@ public class UserService : IUserService
 
     public async Task<List<User>> ListAllUsers()
     {
-        return await _userRepository.ListAllAsync();
+        return await _userRepository.GetAllAsync();
     }
 
     public async Task<bool> Update(UpdateUserDto updateUserDto)

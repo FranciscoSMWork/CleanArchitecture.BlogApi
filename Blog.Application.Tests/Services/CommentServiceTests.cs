@@ -18,6 +18,8 @@ public class CommentServiceTests
     public CommentServiceTests()
     {
         _commentRepositoryMock = new Mock<ICommentRepository>();
+        _postRepositoryMock = new Mock<IPostRepository>();
+        _userRepositoryMock = new Mock<IUserRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
         _commentService = new CommentService(
             _commentRepositoryMock.Object,

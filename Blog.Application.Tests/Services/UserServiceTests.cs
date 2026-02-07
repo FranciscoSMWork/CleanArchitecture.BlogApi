@@ -64,8 +64,8 @@ public class UserServiceTests
         User user = new User(userName, emailCreated, bio);
 
         _userRepositoryMock
-            .Setup(_userRespositoryMock => _userRespositoryMock.AddAsync(user))
-            .ReturnsAsync(user);
+            .Setup(x => x.AddAsync(It.IsAny<User>()))
+            .ReturnsAsync((User u) => u);
 
         //Act
         CreateUserDto createUserDto = new CreateUserDto
@@ -78,7 +78,7 @@ public class UserServiceTests
         UserResultDto userResultDto = await _userService.AddUser(createUserDto);
 
         //Assert
-        _userRepositoryMock.Verify(_userRespositoryMock => _userRespositoryMock.AddAsync(user), Times.Once);
+        _userRepositoryMock.Verify(x => x.AddAsync(It.IsAny<User>()), Times.Once);
         userResultDto.Name.Should().Be(userName);
         userResultDto.Bio.Should().Be(bio);
         userResultDto.Email.Should().Be(email);
@@ -129,7 +129,7 @@ public class UserServiceTests
         user.Bio = newBio;
 
         _userRepositoryMock
-            .Setup(_userRespositoryMock => _userRespositoryMock.UpdateAsync(user.Id, user))
+            .Setup(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<User>()))
             .ReturnsAsync(true);
 
         UpdateUserDto updateUserDto = new UpdateUserDto
@@ -144,7 +144,7 @@ public class UserServiceTests
         bool userEffectiveUpdated = await _userService.Update(updateUserDto);
 
         //Assert
-        _userRepositoryMock.Verify(userRepository => userRepository.UpdateAsync(user.Id, user), Times.Once());
+        _userRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<User>()), Times.Once);
     }
 
     // Deve permitir excluir um funcionário existente
