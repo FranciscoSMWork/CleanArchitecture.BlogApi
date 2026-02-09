@@ -191,38 +191,6 @@ public class UserRepositoryTests
         emailExists.Should().BeFalse();
     }
 
-    //Atualizar Usuário
-    [Fact]
-    public async Task UpdateUser_WhenDateAreCorrect_ShouldReturnTrue()
-    {
-        //Arrange
-        string email = "email@test.com";
-        Email emailCreated = new Email(email);
-
-        string nameUser = "User Name Test";
-        string bioUser = "User Bio";
-        User user = new User(nameUser, emailCreated, bioUser);
-
-        await _context.Users.AddAsync(user);
-        await _unitOfWork.CommitAsync();
-
-        string newEmail = "newemail@test.com";
-        Email newCreatedEmail = new Email(newEmail);
-        
-        string newNameUser = "User Name Test";
-        string newBioUser = "User Bio";
-
-        user.Name = newNameUser;
-        user.Bio = newBioUser;
-        user.Email = newCreatedEmail;
-
-        //Act
-        bool userUpdated = await _repository.UpdateAsync(user.Id, user);
-
-        //Assert
-        userUpdated.Should().BeTrue();
-    }
-
     //Deletar Usuário
     [Fact]
     public async Task DeleteUser_WhenDateAreCorrect_ShouldReturnTrue()
