@@ -49,12 +49,25 @@ public class UserService : IUserService
         return await _userRepository.GetAllAsync();
     }
 
-    public async Task<bool> Update(UpdateUserDto updateUserDto)
+    public async Task<User> Update(Guid Id, UpdateUserDto dto)
     {
-        Email email = new Email(updateUserDto.Email);
-        User user = new User(updateUserDto.Name, email, updateUserDto.Bio);
+        User user = await _userRepository.GetByIdAsync(Id);
 
-        return await _userRepository.UpdateAsync(updateUserDto.Id, user);
+        if (user == null || user.DeletedAt != null)
+            throw new NotFoundException("User");
+
+        if (dto.Name != null)
+            user.UpdateName(dto.Name);
+
+        if (dto.Email != null)
+            user.UpdateEmail(new Email(dto.Email));
+
+        if (dto.Bio != null)
+            user.UpdateBio(dto.Bio);
+
+        await _unitOfWork.CommitAsync();
+
+        return user;
     }
 
     public async Task<bool> Delete(Guid id)

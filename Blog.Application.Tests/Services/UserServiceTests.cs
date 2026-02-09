@@ -43,7 +43,7 @@ public class UserServiceTests
             .ReturnsAsync(user);
 
         //Act
-        await _userService.FindUserById(user.Id);
+        User userFound = await _userService.FindUserById(user.Id);
 
         //Assert
         _userRepositoryMock.Verify(_userRepositoryMock => _userRepositoryMock.GetByIdAsync(user.Id), Times.Once);
@@ -111,9 +111,9 @@ public class UserServiceTests
 
     // Deve permitir atualizar um funcionário existente
     [Fact]
-    public async Task UpdateUser_WhenDatasAreCorrects_ShouldReturnTrue()
+    public async Task UpdateUser_WhenDatasAreCorrects_ShouldUpdateUserAndCommit()
     {
-        //Arrange
+        // Arrange
         string email = "email@test.com";
         Email emailCreated = new Email(email);
 
@@ -125,27 +125,42 @@ public class UserServiceTests
         string newUserName = "New User Name";
         string newBio = "New Bio Test";
 
-        user.Name = newUserName;
-        user.Bio = newBio;
+        /*_userRepositoryMock
+            .Setup(x => x.GetByIdAsync(It.IsAny<Guid>()))
+            .ReturnsAsync(user);*/
 
         _userRepositoryMock
-            .Setup(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<User>()))
-            .ReturnsAsync(true);
+            .Setup(_userRepositoryMock => _userRepositoryMock.GetByIdAsync(user.Id))
+            .ReturnsAsync(user);
+
+        _unitOfWorkMock
+            .Setup(x => x.CommitAsync())
+            .Returns(Task.CompletedTask);
 
         UpdateUserDto updateUserDto = new UpdateUserDto
         {
-            Id = user.Id,
             Name = newUserName,
             Email = email,
             Bio = newBio
         };
 
-        //Act
-        bool userEffectiveUpdated = await _userService.Update(updateUserDto);
+        // Act
+        User userEffectiveUpdated = await _userService.Update(user.Id, updateUserDto);
 
-        //Assert
-        _userRepositoryMock.Verify(x => x.UpdateAsync(It.IsAny<Guid>(), It.IsAny<User>()), Times.Once);
+        // Assert
+        _userRepositoryMock.Verify(
+            x => x.GetByIdAsync(It.IsAny<Guid>()),
+            Times.Once
+        );
+
+        Assert.NotNull(userEffectiveUpdated);
+        Assert.Equal(newUserName, userEffectiveUpdated.Name);
+        Assert.Equal(newBio, userEffectiveUpdated.Bio);
+
+        _userRepositoryMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+        _unitOfWorkMock.Verify(x => x.CommitAsync(), Times.Once);
     }
+
 
     // Deve permitir excluir um funcionário existente
     [Fact]

@@ -72,16 +72,13 @@ public class UsersController : ControllerBase
     {
         UpdateUserDto updateUserDto = new UpdateUserDto
         {
-            Id = Id,
             Name = request.Name,
             Email = request.Email,
             Bio = request.Bio
         };
 
-        var updated = await _userService.Update(updateUserDto);
-        if (!updated)
-            return NotFound();
-
+        var updated = await _userService.Update(Id, updateUserDto);
+        
         return Ok(updated);
     }
 }

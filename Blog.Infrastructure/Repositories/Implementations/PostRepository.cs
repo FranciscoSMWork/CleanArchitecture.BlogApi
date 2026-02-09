@@ -58,11 +58,6 @@ public class PostRepository : IPostRepository
             .ToListAsync();
     }
 
-    public Task<bool> UpdatePost(Post post)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<bool> UpdatePostAsync(Post post)
     {
         bool postExists = await _context.Posts.AnyAsync(p => p.Id == post.Id && p.DeletedAt == null);

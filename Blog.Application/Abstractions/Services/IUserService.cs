@@ -9,7 +9,7 @@ public interface IUserService
     Task<UserResultDto> AddUser(CreateUserDto dto);
     Task<User?> FindUserById(Guid id);
     Task<List<User>> ListAllUsers();
-    Task<bool> Update(UpdateUserDto user);
+    Task<User> Update(Guid Id, UpdateUserDto user);
     Task<bool> Delete(Guid id);
     Task<bool> EmailExistsAsync(Email email);
 }

@@ -9,12 +9,13 @@ using System.Net.Http.Json;
 
 namespace Blog.API.Tests.Controllers;
 
-public class PostControllerTests : IClassFixture<ApiTestFactory>
+public class PostControllerTests
 {
     private readonly HttpClient _client;
 
-    public PostControllerTests(ApiTestFactory factory)
+    public PostControllerTests()
     {
+        ApiTestFactory factory = new ApiTestFactory();
         _client = factory.CreateClient();
     }
 
@@ -113,7 +114,7 @@ public class PostControllerTests : IClassFixture<ApiTestFactory>
 
         //Assert
         var body = await response.Content.ReadAsStringAsync();
-        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         body.Should().Contain("Author");
     }
 
@@ -258,26 +259,28 @@ public class PostControllerTests : IClassFixture<ApiTestFactory>
         var response = await _client.PostAsJsonAsync("/api/posts", createPostRequest);
         response.StatusCode.Should().Be(HttpStatusCode.Created);
 
+        var createdPostResponse = await response.Content.ReadFromJsonAsync<PostResponse>();
+
         //Act
-        string newTitle = "Updated Post Title";
-        string newContent = "This is the updated content of the sample post.";
+        string newTitle = "Updated";
+        string newContent = "Updated";
 
         UpdatePostRequest updatePostRequest = new UpdatePostRequest
         {
             Title = newTitle,
-            Content = newContent,
-            AuthorId = createdUser!.Id
+            Content = newContent
         };
 
-        var updatedPost = await _client.PutAsJsonAsync($"/api/posts/{createdUser.Id}", updatePostRequest);
+        var updatedPost = await _client.PutAsJsonAsync($"/api/posts/{createdPostResponse.Id}", updatePostRequest);
 
         //Assert
         updatedPost.StatusCode.Should().Be(HttpStatusCode.OK);
         updatedPost.Should().NotBeNull();
-        
-        var getResponse = await _client.GetAsync($"/api/posts/{createdUser.Id}");
-        var updatedPostContent = await getResponse.Content
-           .ReadFromJsonAsync<PostResponse>();
+
+        var updatePostContent = await updatedPost.Content.ReadFromJsonAsync<PostResponse>();
+
+        var getResponse = await _client.GetAsync($"/api/posts/{updatePostContent!.Id}");
+        var updatedPostContent = await getResponse.Content.ReadFromJsonAsync<PostResponse>();
         
         updatedPostContent.Title.Should().Be(newTitle);
         updatedPostContent.Content.Should().Be(newContent);
@@ -320,7 +323,7 @@ public class PostControllerTests : IClassFixture<ApiTestFactory>
         var postIsDeleted = await _client.DeleteAsync($"/api/posts/{postCreated!.Id}");
 
         //Assert
-        postIsDeleted.StatusCode.Should().Be(HttpStatusCode.NoContent);
+        postIsDeleted.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     //DELETE /posts/{id} inexistente retorna 404

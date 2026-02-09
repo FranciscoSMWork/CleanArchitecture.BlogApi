@@ -17,7 +17,7 @@ public class UserRepositoryTests
 
     public UserRepositoryTests()
     {
-        _context = DbContextFactory.CreateSqlServerInMemory();
+        _context = DbContextFactory.CreateSqliteInMemory();
         _context.Database.EnsureCreated();
 
         _repository = new UserRepository(_context);

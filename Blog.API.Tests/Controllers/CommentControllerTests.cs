@@ -11,12 +11,13 @@ using Blog.Domain.Entities;
 
 namespace Blog.API.Tests.Controllers;
 
-public class CommentControllerTests : IClassFixture<ApiTestFactory>
+public class CommentControllerTests
 {
     private readonly HttpClient _client;
  
-    public CommentControllerTests(ApiTestFactory factory)
+    public CommentControllerTests()
     {
+        ApiTestFactory factory = new ApiTestFactory();
         _client = factory.CreateClient();
     }
 
@@ -60,11 +61,10 @@ public class CommentControllerTests : IClassFixture<ApiTestFactory>
             Content = "This is a sample comment."
         };
 
-        var commentResponse = await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
-        var createdComment = await commentResponse.Content.ReadFromJsonAsync<CommentResponse>();
-
+        var commentResponse = await _client.PostAsJsonAsync("/api/comment", createCommentRequest);
         commentResponse.StatusCode.Should().Be(HttpStatusCode.Created);
 
+        var createdComment = await commentResponse.Content.ReadFromJsonAsync<CommentResponse>();
         createdComment!.Id.Should().NotBe(Guid.Empty);
         createdComment.Author.Name.Should().Be(createUserRequest.Name);
     }
@@ -109,10 +109,11 @@ public class CommentControllerTests : IClassFixture<ApiTestFactory>
             Content = ""
         };
 
-        var commentResponse = await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
+        var commentResponse = await _client.PostAsJsonAsync("/api/comment", createCommentRequest);
+        commentResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
         var createdComment = await commentResponse.Content.ReadFromJsonAsync<CommentResponse>();
 
-        commentResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
 
     //POST /comments com post inexistente retorna 400
@@ -155,10 +156,8 @@ public class CommentControllerTests : IClassFixture<ApiTestFactory>
             Content = "This is a sample comment."
         };
 
-        var commentResponse = await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
-        var createdComment = await commentResponse.Content.ReadFromJsonAsync<CommentResponse>();
-
-        commentResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var commentResponse = await _client.PostAsJsonAsync("/api/comment", createCommentRequest);
+        commentResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 
     //GET /posts/{id}/comments retorna lista
@@ -201,11 +200,11 @@ public class CommentControllerTests : IClassFixture<ApiTestFactory>
             Content = "This is a sample comment."
         };
 
-        await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
-        await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
-        await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
+        await _client.PostAsJsonAsync("/api/comment", createCommentRequest);
+        await _client.PostAsJsonAsync("/api/comment", createCommentRequest);
+        await _client.PostAsJsonAsync("/api/comment", createCommentRequest);
 
-        var listCommentResponse = await _client.GetAsync("/api/comments");
+        var listCommentResponse = await _client.GetAsync("/api/comment");
 
         List<CommentResponse> listComment = await listCommentResponse.Content.ReadFromJsonAsync<List<CommentResponse>>();
 
@@ -253,9 +252,9 @@ public class CommentControllerTests : IClassFixture<ApiTestFactory>
         };
 
         var commentResponse = await _client.PostAsJsonAsync("/api/comments", createCommentRequest);
-        var createdComment = await commentResponse.Content.ReadFromJsonAsync<CommentResponse>();
-
         commentResponse.StatusCode.Should().Be(HttpStatusCode.Created);
+        var createdComment = await commentResponse.Content.ReadFromJsonAsync<CommentResponse>();
+        
 
         var deleteResponse = await _client.DeleteAsync($"/api/comments/{createdComment!.Id}");
         deleteResponse.StatusCode.Should().Be(HttpStatusCode.NoContent);

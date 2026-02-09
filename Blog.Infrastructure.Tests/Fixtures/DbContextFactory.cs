@@ -1,4 +1,5 @@
 ﻿using Blog.Infrastructure.Context;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 namespace Blog.Infrastructure.Tests.Fixtures;
@@ -14,7 +15,7 @@ public class DbContextFactory
         return new BlogDbContext(options);
     }*/
 
-    public static BlogDbContext CreateSqlServerInMemory()
+/*    public static BlogDbContext CreateSqlServerInMemory()
     {
         var databaseName = $"BlogTestDb_{Guid.NewGuid()}";
 
@@ -34,5 +35,21 @@ public class DbContextFactory
         context.Database.EnsureCreated();
 
         return context;
+    }*/
+
+    public static BlogDbContext CreateSqliteInMemory()
+    {
+        var connection = new SqliteConnection("Filename=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<BlogDbContext>()
+            .UseSqlite(connection)
+            .Options;
+
+        var context = new BlogDbContext(options);
+        context.Database.EnsureCreated();
+
+        return context;
     }
+
 }

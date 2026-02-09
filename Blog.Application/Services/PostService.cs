@@ -31,8 +31,7 @@ public class PostService : IPostService
 
         Post post = new Post(createPostDto.Title, createPostDto.Content, author);
         Post createdPost = await _postRepository.AddAsync(post);
-
-
+        
         PostResultDto postResultDto = new PostResultDto
         {
             Id = createdPost.Id,
@@ -48,9 +47,22 @@ public class PostService : IPostService
     {
         return await _postRepository.ListAllAsync();
     }
-    public async Task<bool> UpdatePostAsync(Post post)
+    public async Task<Post> UpdatePostAsync(Guid Id, UpdatePostDto updatePostDto)
     {
-        return await _postRepository.UpdatePost(post);
+        var post = await _postRepository.GetByIdAsync(Id);
+
+        if (post == null || post.DeletedAt != null)
+            throw new NotFoundException("Post");
+
+        if (updatePostDto.Content != null)
+            post.UpdateContent(updatePostDto.Content);
+        
+        if (updatePostDto.Title != null)
+            post.UpdateTitle(updatePostDto.Title);
+        
+        await _unitOfWork.CommitAsync();
+
+        return post;
     }
     public async Task<bool> DeletePostAsync(Guid Id)
     {

@@ -8,13 +8,14 @@ using System.Net.Http.Json;
 
 namespace Blog.API.Tests.Controllers;
 
-public class UserControllerTests : IClassFixture<ApiTestFactory>
+public class UserControllerTests
 {
 
     private readonly HttpClient _client;
 
-    public UserControllerTests(ApiTestFactory factory)
+    public UserControllerTests()
     {
+        ApiTestFactory factory = new ApiTestFactory();
         _client = factory.CreateClient();
     }
 

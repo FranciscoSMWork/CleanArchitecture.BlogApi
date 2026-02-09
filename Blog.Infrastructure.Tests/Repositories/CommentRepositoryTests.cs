@@ -6,12 +6,6 @@ using Blog.Infrastructure.Persistence;
 using Blog.Infrastructure.Repositories.Implementations;
 using Blog.Infrastructure.Tests.Fixtures;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.Infrastructure.Tests.Repositories;
 
@@ -23,7 +17,7 @@ public class CommentRepositoryTests
 
     public CommentRepositoryTests()
     {
-        _context = DbContextFactory.CreateSqlServerInMemory();
+        _context = DbContextFactory.CreateSqliteInMemory();
         _context.Database.EnsureCreated();
 
         _repository = new CommentRepository(_context);

@@ -43,7 +43,7 @@ public class CommentService : ICommentService
             throw new NotFoundException("Post");
 
         Comment newComment = new Comment(
-            post, 
+            post,
             author, 
             createCommentDto.Content
         );

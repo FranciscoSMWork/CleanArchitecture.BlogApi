@@ -12,8 +12,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.HasKey(c => c.Id);
 
         builder.Property(c => c.Id)
-            .IsRequired()
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
+            .IsRequired();
 
         builder.Property(c => c.PostId)
             .IsRequired();
@@ -24,12 +23,10 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .HasMaxLength(1000);
 
         builder.Property(c => c.CreatedAt)
-            .IsRequired()
-            .HasDefaultValueSql("GETDATE()");
+            .IsRequired();
 
         builder.Property(c => c.UpdatedAt)
-            .IsRequired()
-            .HasDefaultValueSql("GETDATE()");
+            .IsRequired();
 
         builder.Property(c => c.DeletedAt)
             .IsRequired(false);

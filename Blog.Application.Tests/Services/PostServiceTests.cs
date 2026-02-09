@@ -75,8 +75,8 @@ public class PostServiceTests
         Post post = new Post(title, content, user);
 
         _postRepositoryMock
-            .Setup(_postRepositoryMock => _postRepositoryMock.AddAsync(post))
-            .ReturnsAsync(post);
+            .Setup(r => r.AddAsync(It.IsAny<Post>()))
+            .ReturnsAsync((Post p) => p);
 
         CreatePostDto createPostDto = new CreatePostDto
         {
@@ -94,7 +94,7 @@ public class PostServiceTests
         postReturned.Author.Name.Should().Be(nameUser);
         postReturned.Author.Bio.Should().Be(bio);
         _postRepositoryMock
-            .Verify(_postRepositoryMock => _postRepositoryMock.AddAsync(post), Times.Once);
+            .Verify(r => r.AddAsync(It.IsAny<Post>()), Times.Once);
     }
 
     [Fact]
@@ -150,17 +150,28 @@ public class PostServiceTests
             post.Content = content;
             post.Author = newUser;
 
+
             _postRepositoryMock
-                .Setup(_postRepositoryMock => _postRepositoryMock.UpdatePost(post))
+                .Setup(p => p.GetByIdAsync(It.IsAny<Guid>()))
+                .ReturnsAsync(post);
+
+/*            _postRepositoryMock
+                .Setup(_postRepositoryMock => _postRepositoryMock.UpdatePostAsync(post))
                 .ReturnsAsync(true);
-        
+*/
+            UpdatePostDto updatePostDto = new UpdatePostDto
+            {
+                Title = post.Title,
+                Content = post.Content
+            };
+
             // Act
-            bool postUpdated =  await _postService.UpdatePostAsync(post);
+            Post postUpdated =  await _postService.UpdatePostAsync(post.Id, updatePostDto);
 
             // Assert
-            _postRepositoryMock
-                .Verify(_postRepositoryMock => _postRepositoryMock.UpdatePost(post), Times.Once);
-        }
+            _postRepositoryMock.Verify(x => x.GetByIdAsync(It.IsAny<Guid>()), Times.Once);
+            _unitOfWorkMock.Verify(x => x.CommitAsync(), Times.Once);
+    }
 
         [Fact]
         public async Task DeletePost_WhenIdIsCorrect_ShouldReturnTrue()

@@ -13,8 +13,7 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
 
         builder.HasKey(p => p.Id);
         builder.Property(p => p.Id)
-            .IsRequired()
-            .HasDefaultValueSql("NEWSEQUENTIALID()");
+            .IsRequired();
 
         builder.Property(p => p.Title)
             .IsRequired()
@@ -27,11 +26,9 @@ public class PostConfiguration : IEntityTypeConfiguration<Post>
             .IsRequired();
 
         builder.Property(p => p.CreatedAt)
-            .IsRequired()
-            .HasDefaultValueSql("GETUTCDATE()");
+            .IsRequired();
         builder.Property(p => p.UpdatedAt)
-            .IsRequired()
-            .HasDefaultValueSql("GETUTCDATE()");
+            .IsRequired();
         builder.Property(p => p.DeletedAt);
 
         builder.HasOne(p => p.Author)

@@ -1,4 +1,5 @@
-﻿using Blog.API.Dtos.Posts;
+﻿using Azure.Core;
+using Blog.API.Dtos.Posts;
 using Blog.API.Dtos.Users;
 using Blog.Application.Abstractions.Services;
 using Blog.Application.DTOs.Posts;
@@ -88,14 +89,21 @@ public class PostsController : ControllerBase
     }
 
     [HttpPut("{Id}")]
-    public async Task<IActionResult> Update(Guid Id, [FromBody] UpdatePostRequest updatePostRequest)
+    public async Task<IActionResult> Update(Guid Id, [FromBody] UpdatePostRequest request)
     {
-        var post = await _postService.FindPostById(Id);
+        var updatePostDto = new UpdatePostDto {
+            Title = request.Title,
+            Content = request.Content
+        };
+
+        var post = await _postService.UpdatePostAsync(Id, updatePostDto);
+
         if (post == null)
             return NotFound();
 
         var response = new PostResponse
         {
+            Id = post.Id,
             Title = post.Title,
             Content = post.Content,
             AuthorId = post.Author.Id,

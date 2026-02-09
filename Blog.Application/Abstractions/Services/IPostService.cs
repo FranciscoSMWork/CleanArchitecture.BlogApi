@@ -13,6 +13,6 @@ public interface IPostService
     Task<Post> FindPostById(Guid Id);
     Task<PostResultDto> AddAsync(CreatePostDto createPostDto);
     Task<List<Post>> ListAllPostAsync();
-    Task<bool> UpdatePostAsync(Post post);
+    Task<Post> UpdatePostAsync(Guid Id, UpdatePostDto post);
     Task<bool> DeletePostAsync(Guid Id);
 }

@@ -20,9 +20,9 @@ public class CommentRepository : ICommentRepository
         return comment;
     }
 
-    public async Task<Comment> GetByIdAsync(Guid Id)
+    public async Task<Comment?> GetByIdAsync(Guid Id)
     {
-        return await _context.Comments.FindAsync(Id);
+        return await _context.Comments.FirstOrDefaultAsync(c => c.Id == Id);
     }
 
     public async Task<List<Comment>> GetAllAsync()

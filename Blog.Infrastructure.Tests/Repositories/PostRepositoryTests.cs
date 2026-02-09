@@ -17,7 +17,7 @@ public class PostRepositoryTests
 
     public PostRepositoryTests()
     {
-        _context = DbContextFactory.CreateSqlServerInMemory();
+        _context = DbContextFactory.CreateSqliteInMemory();
         _context.Database.EnsureCreated();
 
         _repository = new PostRepository(_context);

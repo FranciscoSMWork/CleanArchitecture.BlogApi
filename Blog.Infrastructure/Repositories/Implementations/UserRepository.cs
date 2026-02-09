@@ -51,6 +51,8 @@ public class UserRepository : IUserRepository
             .ToListAsync();
     }
 
+
+    //Remover Método
     public async Task<bool> UpdateAsync(Guid Id, User user)
     {
         var existingUser = await _context.Users

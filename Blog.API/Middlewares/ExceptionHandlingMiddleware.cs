@@ -51,6 +51,7 @@ public class ExceptionHandlingMiddleware
             ValueCannotBeEmptyException => StatusCodes.Status400BadRequest,
             ValueIsInvalidException => StatusCodes.Status400BadRequest,
             ExceedCaractersNumberException => StatusCodes.Status422UnprocessableEntity,
+            NotFoundException => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status400BadRequest
         };
     }

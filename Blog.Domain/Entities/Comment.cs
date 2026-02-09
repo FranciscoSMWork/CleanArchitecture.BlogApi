@@ -9,7 +9,7 @@ namespace Blog.Domain.Entities;
 
 public class Comment
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public Post Post { get; set; }
     public Guid PostId { get; set; }
     public User Author { get; set; }
@@ -32,6 +32,7 @@ public class Comment
             throw new ValueCannotBeEmptyException("Post");
 
         this.Post = post;
+        this.PostId = post.Id;
         this.Author = author;
         this.AuthorId = author.Id;
         this.Content = content;

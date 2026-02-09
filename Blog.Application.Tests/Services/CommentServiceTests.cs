@@ -75,17 +75,24 @@ public class CommentServiceTests
         string bio = "Bio Test";
         User user = new User(nameUser, emailCreated, bio);
 
+        _userRepositoryMock
+            .Setup(_userRepositoryMock => _userRepositoryMock.GetByIdAsync(user.Id))
+            .ReturnsAsync(user);
+
         string title = "Title Test";
         string contentPost = "Content Test";
         Post post = new Post(title, contentPost, user);
+
+        _postRepositoryMock
+            .Setup(_postRepositoryMock => _postRepositoryMock.GetByIdAsync(post.Id))
+            .ReturnsAsync(post);
 
         string contentComment = "Comment Test";
         Comment comment = new Comment(post, user, contentComment);
 
         _commentRepositoryMock
-            .Setup(_commentRepositoryMock => _commentRepositoryMock.AddAsync(comment))
-            .ReturnsAsync(comment);
-
+            .Setup(r => r.AddAsync(It.IsAny<Comment>()))
+            .ReturnsAsync((Comment c) => c);
 
         CommentCreateDto commentCreate = new CommentCreateDto
         {
@@ -98,8 +105,8 @@ public class CommentServiceTests
         CommentDto commentAdded = await _commentService.AddCommentAsync(commentCreate);
 
         //Assert
-        _commentRepositoryMock.Verify(_commentRepositoryMock => _commentRepositoryMock.AddAsync(comment), Times.Once);
-        
+        _commentRepositoryMock.Verify(r => r.AddAsync(It.IsAny<Comment>()), Times.Once);
+
     }
 
 }

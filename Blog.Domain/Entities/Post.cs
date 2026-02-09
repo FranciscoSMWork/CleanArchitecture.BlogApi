@@ -11,7 +11,7 @@ public class Post
 {
     private int maxContentLength = 1000;
 
-    public Guid Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
     public string Title { get; set; }
     public string Content { get; set; } = null!;
     public User Author { get; set; }
@@ -21,8 +21,8 @@ public class Post
     public List<Comment> Comments { get; set; } = new List<Comment>();
     public List<PostLike> Likes { get; set; } = new List<PostLike>();
 
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public DateTime? DeletedAt { get; set; }
 
     protected Post() { }
@@ -46,9 +46,25 @@ public class Post
         if (newContent.Length > maxContentLength)
             throw new ExceedCaractersNumberException("Content");
 
-        this.Content = newContent ?? "";
+        this.Content = newContent;
     }
 
+    public void UpdateTitle(string newTitle)
+    {
+        this.Title = newTitle;
+    }
 
+    public void Update(string title, string content)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new ValueCannotBeEmptyException("Title");
+        
+        if (string.IsNullOrWhiteSpace(content))
+            throw new ValueCannotBeEmptyException("Content");
 
+        UpdateTitle(title);
+        UpdateContent(content);
+
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
