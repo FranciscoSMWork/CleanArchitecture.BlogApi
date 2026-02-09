@@ -51,23 +51,6 @@ public class UserRepository : IUserRepository
             .ToListAsync();
     }
 
-
-    //Remover Método
-    public async Task<bool> UpdateAsync(Guid Id, User user)
-    {
-        var existingUser = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == Id && u.DeletedAt == null);
-
-        if (existingUser == null)
-            return false;
-
-        existingUser.Name = user.Name;
-        existingUser.Email = user.Email;
-        existingUser.Bio = user.Bio;
-
-        return await _context.SaveChangesAsync() > 0;
-    }
-
     public async Task<User> GetUserByEmail(Email email)
     {
         return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
