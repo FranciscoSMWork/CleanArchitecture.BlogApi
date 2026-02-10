@@ -1,0 +1,130 @@
+📌 Introdução
+	Este projeto tem como objetivo demonstrar a aplicação dos conceitos de Clean Architecture utilizando a linguagem C# com o framework .NET.
+	O foco principal é a separação de responsabilidades entre camadas, promovendo:
+
+		baixo acoplamento
+		alta coesão
+		testabilidade
+		manutenção facilitada
+		organização orientada a domínio
+
+	O projeto foi desenvolvido com fins de estudo e evolução arquitetural.
+
+🧠 Tema do projeto
+	O sistema consiste em uma API de um pequeno blog.
+
+### Entidades principais:
+	User
+	Post
+	Comment
+
+### Regras de negócio:
+	Usuários podem criar posts
+	Usuários podem comentar em posts
+	Usuários podem atualizar seus posts
+	Usuários podem atualizar seus comentários
+	Usuários podem curtir posts (se aplicável ao seu modelo)	
+
+🧪 Arquitetura Utilizada
+    Clean Architecture
+    Domain Driven Design (DDD - conceitos básicos)
+    Repository Pattern
+    Unit of Work
+    Value Objects
+    Dependency Injection
+
+🎯 Objetivos do Projeto
+    Estudo de arquitetura em .NET
+    Organização em camadas
+    Evolução de boas práticas
+    Preparação para projetos escaláveis
+
+🏗️ Estrutura do projeto
+
+	# API
+        Responsável pela comunicação externa com o sistema.
+
+        Principais responsabilidades:
+            Exposição dos endpoints HTTP
+            Recebimento das requisições
+            Validação de entrada
+            Serialização e desserialização
+            Middleware de tratamento de exceções
+            Injeção de dependências
+            A camada de API não contém regras de negócio.
+
+	# Application
+        Responsável pelos casos de uso do sistema.
+
+        Principais responsabilidades:
+            Orquestração das regras de negócio
+            Coordenação entre entidades e repositórios
+            Implementação dos Services
+            DTOs de entrada e saída
+            Validações de fluxo de aplicação
+
+        A camada de Application utiliza:
+            Entities do Domain
+            Interfaces de Repositório
+            Value Objects
+
+	# Infrastructure
+		Responsável pelo acesso a dados e integração com tecnologias externas.
+
+		Principais responsabilidades:
+
+			Implementação dos repositórios
+			Configuração do Entity Framework
+			DbContext
+			Persistência no banco de dados
+			Essa camada depende do Domain, mas o Domain não depende dela.
+
+	# Domain
+		Camada central da aplicação.
+		Principais responsabilidades:
+
+			Entidades do domínio
+			Value Objects
+			Regras de negócio
+			Exceptions de domínio
+			Interfaces de repositórios
+
+		Essa camada não possui dependências externas.
+
+
+📌 Pré-requisitos
+	
+	# Ambiente de Desenvolvimento
+		.NET SDK (versão utilizada no projeto — ex: .NET 8)
+		Git
+		Visual Studio 2022 / VS Code (opcional, mas recomendado)
+
+	
+	# Banco de Dados
+		O projeto utiliza Microsoft SQL Server.
+
+        1 - SQL Server LocalDB
+		Sugiro fazer uso do SQL Server LocalDB, que já incluído com:
+			Visual Studio
+			SQL Server Express
+		Connection string padrão do projeto:
+			(localdb)\MSSQLLocalDB
+
+    # Clonar o Repositório
+    git clone https://github.com/seu-usuario/seu-projeto.git
+
+    cd seu-projeto
+
+    dotnet restore
+
+    dotnet ef database update
+
+    dotnet run --project Blog.API
+
+    dotnet run
+
+    https://localhost:xxxx/swagger
+
+    dotnet test
+
+
