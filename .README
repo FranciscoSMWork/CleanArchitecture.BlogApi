@@ -110,21 +110,28 @@
 		Connection string padrão do projeto:
 			(localdb)\MSSQLLocalDB
 
-    # Clonar o Repositório
-    git clone https://github.com/FranciscoSalomonMaier/Blog2
 
+	### Passo a passo para inicializar
+    
+	# Clonar o Repositório
+    git clone https://github.com/FranciscoSMWork/CleanArchitecture.BlogApi
+
+	# Entrar no diretório do projeto
     cd seu-projeto
 
+	# Restaurar dependências do projeto .NET.
     dotnet restore
 
+	# Atualizar appsettings.json conforme você optar
+	* Olhar arquivo appsettings.Example.json para exemplo
+
+	# Entrar no diretório do projeto da API
+	cd Blog.API
+
+	# Gerar banco de dados e rodar migrations
     dotnet ef database update
 
-    dotnet run --project Blog.API
-
-    dotnet run
-
+	# Run Project
+	Inicialize o projeto normalemente e acesse o link (xxxx represente a porta em que o serviço está rodando)
     https://localhost:xxxx/swagger
-
-    dotnet test
-
 
