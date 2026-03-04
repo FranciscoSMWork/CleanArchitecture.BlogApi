@@ -97,14 +97,14 @@ public class UserServiceTests
 
         User user = new User(userName, emailCreated, bio);
 
-        _userRepositoryMock.Setup(_userRepositoryMock => _userRepositoryMock.GetAllAsync())
+        _userRepositoryMock.Setup(_userRepositoryMock => _userRepositoryMock.ListAllAsync())
             .ReturnsAsync(new List<User> { user });
 
         //Act
         List<UserDto> users = await _userService.ListAllUsers();
 
         //Assert
-        _userRepositoryMock.Verify(_userRepositoryMock => _userRepositoryMock.GetAllAsync(), Times.Once);
+        _userRepositoryMock.Verify(_userRepositoryMock => _userRepositoryMock.ListAllAsync(), Times.Once);
         Assert.NotNull(users);
         Assert.Single(users);
     }

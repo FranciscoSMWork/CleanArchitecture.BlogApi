@@ -45,11 +45,11 @@ public class PostServiceTests
             .ReturnsAsync(post);
 
         // Act
-        PostDto postReturned = await _postService.FindPostById(user.Id);
+        PostDto postReturned = await _postService.FindPostById(post.Id);
 
         // Assert
         _postRepositoryMock
-            .Verify(_postRepositoryMock => _postRepositoryMock.GetByIdAsync(user.Id));
+            .Verify(_postRepositoryMock => _postRepositoryMock.GetByIdAsync(post.Id));
     }
 
     [Fact]
@@ -121,7 +121,7 @@ public class PostServiceTests
         List<PostDto> postReturned = await _postService.ListAllPostAsync();
 
         // Assert
-        Assert.All(postReturned, p => Assert.IsType<Post>(p));
+        Assert.All(postReturned, p => Assert.IsType<PostDto>(p));
         Assert.Single(postReturned);
         _postRepositoryMock.Verify(_postRepositoryMock => _postRepositoryMock.ListAllAsync());
 

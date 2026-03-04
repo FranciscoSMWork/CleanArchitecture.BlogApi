@@ -4,9 +4,9 @@ namespace Blog.Domain.Entities;
 public class PostTag
 {
     public int Id { get; private set; }
-    public Post Post { get; private set; }
+    public Post Post { get; private set; } = null!;
     public Guid PostId;
-    public Tag Tag { get; private set; }
+    public Tag Tag { get; private set; } = null!;
     public int TagId;
     protected PostTag() { }
     public PostTag(Post post, Tag tag)

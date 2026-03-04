@@ -7,9 +7,9 @@ public class Post
     private int maxContentLength = 1000;
 
     public Guid Id { get; private set; } = Guid.NewGuid();
-    public string Title { get; private set; }
+    public string Title { get; private set; } = null!;
     public string Content { get; private set; } = null!;
-    public User Author { get; private set; }
+    public User Author { get; private set; } = null!;
     public Guid AuthorId; 
 
     public List<PostTag> Tags { get; private set; } = new List<PostTag>();
