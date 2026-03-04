@@ -6,10 +6,10 @@ public class Comment
 {
     public Guid Id { get; private set; } = Guid.NewGuid();
     public Guid PostId { get; private set; }
-    public Post Post;
-    public User Author { get; private set; }
-    public Guid AuthorId;
-    public string Content { get; private set; }
+    public Post Post { get; private set; } = null!;
+    public Guid AuthorId { get; private set; }
+    public User Author { get; private set; } = null!;
+    public string Content { get; private set; } = null!;
     public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
     public DateTime? DeletedAt { get; private set; }

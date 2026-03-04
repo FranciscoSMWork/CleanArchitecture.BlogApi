@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Blog.Domain.ValueObjects;
 public class Email
 {
-    public string Address { get; private set; }
+    public string Address { get; private set; } = null!;
     protected Email() { }
     public Email(string address)
     {

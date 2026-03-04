@@ -8,9 +8,9 @@ public class User
     private const int maxBioLength = 1000;
 
     public Guid Id { get; private set; } = Guid.NewGuid();
-    public string Name { get; private set; }
-    public Email Email { get; private set; }
-    public string Bio { get; private set; }
+    public string Name { get; private set; } = null!;
+    public Email Email { get; private set; } = null!;
+    public string Bio { get; private set; } = null!;
 
     private readonly List<Comment> _comments = new();
     public IReadOnlyCollection<Comment> Comments => _comments.AsReadOnly();
