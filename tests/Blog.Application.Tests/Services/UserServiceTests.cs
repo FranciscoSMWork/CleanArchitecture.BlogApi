@@ -43,7 +43,7 @@ public class UserServiceTests
             .ReturnsAsync(user);
 
         //Act
-        User userFound = await _userService.FindUserById(user.Id);
+        UserDto userFound = await _userService.FindUserById(user.Id);
 
         //Assert
         _userRepositoryMock.Verify(_userRepositoryMock => _userRepositoryMock.GetByIdAsync(user.Id), Times.Once);
@@ -75,7 +75,7 @@ public class UserServiceTests
             Bio = bio
         };
 
-        UserResultDto userResultDto = await _userService.AddUser(createUserDto);
+        UserDto userResultDto = await _userService.AddUser(createUserDto);
 
         //Assert
         _userRepositoryMock.Verify(x => x.AddAsync(It.IsAny<User>()), Times.Once);
@@ -101,7 +101,7 @@ public class UserServiceTests
             .ReturnsAsync(new List<User> { user });
 
         //Act
-        List<User> users = await _userService.ListAllUsers();
+        List<UserDto> users = await _userService.ListAllUsers();
 
         //Assert
         _userRepositoryMock.Verify(_userRepositoryMock => _userRepositoryMock.GetAllAsync(), Times.Once);
@@ -145,7 +145,7 @@ public class UserServiceTests
         };
 
         // Act
-        User userEffectiveUpdated = await _userService.Update(user.Id, updateUserDto);
+        UserDto userEffectiveUpdated = await _userService.Update(user.Id, updateUserDto);
 
         // Assert
         _userRepositoryMock.Verify(
