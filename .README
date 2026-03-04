@@ -1,0 +1,167 @@
+📌 Introdução
+    Este projeto tem como objetivo demonstrar a aplicação dos conceitos de Clean Architecture utilizando a linguagem C# com o framework .NET.
+    O foco principal é a separação de responsabilidades entre camadas, promovendo:
+
+        baixo acoplamento
+        alta coesão
+        testabilidade
+        manutenção facilitada
+        organização orientada a domínio
+
+    O projeto foi desenvolvido com fins de estudo e evolução arquitetural.
+
+🧠 Tema do projeto
+    O sistema consiste em uma API de um pequeno blog.
+
+# Entidades principais:
+
+    User
+    Post
+    Comment
+
+# Regras de negócio:
+
+    Usuários podem criar posts
+    Usuários podem comentar em posts
+    Usuários podem atualizar seus posts
+    Usuários podem atualizar seus comentários
+    Usuários podem curtir posts (se aplicável ao modelo)
+
+🧪 Arquitetura Utilizada
+    Clean Architecture
+    Domain Driven Design (DDD – conceitos básicos)
+    Repository Pattern
+    Unit of Work
+    Value Objects
+    Dependency Injection
+    Princípios SOLID
+
+🧩 Princípios SOLID
+
+O projeto segue os princípios SOLID como base para organização e estruturação do código.
+
+S – Single Responsibility Principle
+Cada classe possui uma única responsabilidade e um único motivo para mudança.
+
+O – Open/Closed Principle
+As classes devem estar abertas para extensão e fechadas para modificação.
+
+L – Liskov Substitution Principle
+Subclasses devem poder substituir suas classes base sem alterar o comportamento esperado do sistema.
+
+I – Interface Segregation Principle
+Interfaces devem ser específicas e coesas, evitando que classes implementem métodos que não utilizam.
+
+D – Dependency Inversion Principle
+Módulos de alto nível dependem de abstrações, não de implementações concretas.
+As implementações são fornecidas por meio de injeção de dependência.
+
+🎯 Objetivos do Projeto
+    Estudo de arquitetura em .NET
+    Organização em camadas
+    Aplicação de boas práticas
+    Preparação para projetos escaláveis
+
+🏗️ Estrutura do projeto
+
+# API
+
+    Responsável pela comunicação externa com o sistema.
+
+    Principais responsabilidades:
+        Exposição dos endpoints HTTP
+        Recebimento das requisições
+        Validação de entrada
+        Serialização e desserialização
+        Middleware de tratamento de exceções
+        Injeção de dependências
+
+    A camada de API não contém regras de negócio.
+
+# Application
+
+    Responsável pelos casos de uso do sistema.
+
+    Principais responsabilidades:
+        Orquestração das regras de negócio
+        Coordenação entre entidades e repositórios
+        Implementação dos Services
+        DTOs de entrada e saída
+        Validações de fluxo de aplicação
+
+    A camada de Application utiliza:
+        Entities do Domain
+        Interfaces de Repositório
+        Value Objects
+
+# Infrastructure
+
+    Responsável pelo acesso a dados e integração com tecnologias externas.
+
+    Principais responsabilidades:
+
+        Implementação dos repositórios
+        Configuração do Entity Framework
+        DbContext
+        Persistência no banco de dados
+
+    Essa camada depende do Domain, mas o Domain não depende dela.
+
+# Domain
+
+    Camada central da aplicação.
+
+    Principais responsabilidades:
+
+        Entidades do domínio
+        Value Objects
+        Regras de negócio
+        Exceptions de domínio
+        Interfaces de repositórios
+
+    Essa camada não possui dependências externas.
+
+📌 Pré-requisitos
+
+# Ambiente de Desenvolvimento
+
+    .NET SDK (versão utilizada no projeto — ex: .NET 8)
+    Git
+    Visual Studio 2022 / VS Code (opcional, mas recomendado)
+
+# Banco de Dados
+
+    O projeto utiliza Microsoft SQL Server.
+
+1 - SQL Server LocalDB
+    Sugere-se utilizar o SQL Server LocalDB, incluído com:
+        Visual Studio
+        SQL Server Express
+
+    Connection string padrão do projeto:
+        (localdb)\MSSQLLocalDB
+
+Passo a passo para inicializar
+
+# Clonar o Repositório
+git clone https://github.com/FranciscoSMWork/CleanArchitecture.BlogApi
+
+# Entrar no diretório do projeto
+cd seu-projeto
+
+# Restaurar dependências do projeto .NET
+dotnet restore
+
+# Atualizar appsettings.json conforme necessário
+
+Consultar o arquivo appsettings.Example.json
+
+# Entrar no diretório do projeto da API
+cd Blog.API
+
+# Gerar banco de dados e rodar migrations
+dotnet ef database update
+
+# Executar o projeto
+Inicializar a aplicação e acessar:
+https://localhost:xxxx/swagger

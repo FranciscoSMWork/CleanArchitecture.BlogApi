@@ -1,0 +1,6 @@
+﻿
+### Bibliotecas necesárias para esse projeto
+
+dotnet add package Microsoft.AspNetCore.Mvc.Testing
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package FluentAssertions
