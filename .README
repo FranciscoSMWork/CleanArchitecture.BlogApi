@@ -14,13 +14,11 @@
     O sistema consiste em uma API de um pequeno blog.
 
 # Entidades principais:
-
     User
     Post
     Comment
 
 # Regras de negócio:
-
     Usuários podem criar posts
     Usuários podem comentar em posts
     Usuários podem atualizar seus posts
@@ -65,7 +63,6 @@ As implementações são fornecidas por meio de injeção de dependência.
 🏗️ Estrutura do projeto
 
 # API
-
     Responsável pela comunicação externa com o sistema.
 
     Principais responsabilidades:
@@ -79,7 +76,6 @@ As implementações são fornecidas por meio de injeção de dependência.
     A camada de API não contém regras de negócio.
 
 # Application
-
     Responsável pelos casos de uso do sistema.
 
     Principais responsabilidades:
@@ -95,7 +91,6 @@ As implementações são fornecidas por meio de injeção de dependência.
         Value Objects
 
 # Infrastructure
-
     Responsável pelo acesso a dados e integração com tecnologias externas.
 
     Principais responsabilidades:
@@ -108,7 +103,6 @@ As implementações são fornecidas por meio de injeção de dependência.
     Essa camada depende do Domain, mas o Domain não depende dela.
 
 # Domain
-
     Camada central da aplicação.
 
     Principais responsabilidades:
@@ -124,13 +118,11 @@ As implementações são fornecidas por meio de injeção de dependência.
 📌 Pré-requisitos
 
 # Ambiente de Desenvolvimento
-
     .NET SDK (versão utilizada no projeto — ex: .NET 8)
     Git
     Visual Studio 2022 / VS Code (opcional, mas recomendado)
 
 # Banco de Dados
-
     O projeto utiliza Microsoft SQL Server.
 
 1 - SQL Server LocalDB
@@ -147,17 +139,13 @@ Passo a passo para inicializar
 git clone https://github.com/FranciscoSMWork/CleanArchitecture.BlogApi
 
 # Entrar no diretório do projeto
-cd seu-projeto
+cd CleanArquitecture.ApiBlog/src/Blog.API
 
 # Restaurar dependências do projeto .NET
 dotnet restore
 
 # Atualizar appsettings.json conforme necessário
-
 Consultar o arquivo appsettings.Example.json
-
-# Entrar no diretório do projeto da API
-cd Blog.API
 
 # Gerar banco de dados e rodar migrations
 dotnet ef database update
